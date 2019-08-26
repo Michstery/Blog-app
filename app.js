@@ -16,7 +16,7 @@ app.use(methodoverride("_method"));
 
 
 //mongoose config
-mongoose.connect("mongodb://localhost/blogapp", {
+mongoose.connect("mongodb+srv://yokomon:macaulay1234@yokoapp-9gnix.mongodb.net/test?retryWrites=true&w=majority", {
     useNewUrlParser: true
 });
 var blogSchema = new mongoose.Schema({
