@@ -16,9 +16,21 @@ app.use(methodoverride("_method"));
 
 
 //mongoose config
-mongoose.connect("mongodb+srv://yokomon:macaulay1234@yokoapp-9gnix.mongodb.net/test?retryWrites=true&w=majority", {
+
+const MongoClient = require('mongodb').MongoClient;
+const uri = "mongodb+srv://yokomon:macaulay1234@yokoapp-9gnix.mongodb.net/test?retryWrites=true&w=majority";
+const client = new MongoClient(uri, {
     useNewUrlParser: true
 });
+client.connect(err => {
+    const collection = client.db("test").collection("devices");
+    // perform actions on the collection object
+    client.close();
+});
+
+mongoose.connect(process.env.MONGODB_URI ||
+    'mongodb://localhost/127.0.0.1');
+
 var blogSchema = new mongoose.Schema({
     title: String,
     image: String,
