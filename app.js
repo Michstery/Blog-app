@@ -17,19 +17,21 @@ app.use(methodoverride("_method"));
 
 //mongoose config
 
-const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://yokomon:macaulay1234@yokoapp-9gnix.mongodb.net/test?retryWrites=true&w=majority";
-const client = new MongoClient(uri, {
-    useNewUrlParser: true
-});
-client.connect(err => {
-    const collection = client.db("test").collection("devices");
-    // perform actions on the collection object
-    client.close();
-});
 
-mongoose.connect(process.env.MONGODB_URI ||
-    'mongodb://localhost/127.0.0.1');
+const MONGOURL = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/demo';
+mongoose.Promise = global.Promise;
+
+
+mongoose.connect(MONGOURL, {
+    useNewUrlParser: true
+}, err => {
+    if (err) {
+        console.error(`Error connecting to MongoDB:`, err.stack);
+        console.log('Process exiting with code 1');
+        process.exit(1);
+    }
+    console.log('Connected to DB successfully!');
+});
 
 var blogSchema = new mongoose.Schema({
     title: String,
@@ -139,6 +141,6 @@ app.delete("/blogs/:id", function (req, res) {
     //redirect
 })
 
-app.listen(process.env.port || 3000, function () {
+app.listen(process.env.PORT || 3000, function () {
     console.log("we are up and running !!!")
 })
